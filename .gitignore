@@ -1,0 +1,19 @@
+# PlatformIO
+.pio
+.pioenvs
+.piolibdeps
+libdeps/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Project local
+*.local
+node_modules/
