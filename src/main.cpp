@@ -25,7 +25,7 @@ uint16_t calData[5];
 bool calibration_saved = false;
 int image_to_display;
 
-#define DEVICE_NAME "BikeNav"
+#define DEVICE_NAME "BikeNavESP32"
 #define SERVICE_UUID "3982587f-ced2-414a-9fe8-d2b53a1e4edd"
 #define CHARACTERISTIC_UUID "075a6687-6b8c-4ab7-9b3c-5913fa300734"
 
