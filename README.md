@@ -1,6 +1,6 @@
-# 📟 NavSystem: ESP32 Dashboard
+# 📟 BikeNavESP32 Dashboard
 
-A high-performance, real-time navigation dashboard for motorcycles and bicycles. This project acts as the physical interface for the **NavSystem** ecosystem, receiving and visualizing telemetry and guidance data from the Android Companion app via low-latency BLE.
+A high-performance, real-time navigation dashboard for motorcycles and bicycles. This project acts as the physical interface for the **BikeNav** ecosystem, receiving and visualizing telemetry and guidance data from the Android Companion app via low-latency BLE.
 
 ## 🌌 Features
 - **Real-time Navigation**: Synchronized turn-by-turn guidance with maneuver icons, distance, and ETA.
