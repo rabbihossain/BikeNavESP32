@@ -25,10 +25,21 @@ Search on `Aliexpress` for: **3.5 inch TFT LCD 320x480 ST7796 for ESP32** OR `Go
 
 ## 📱 Screenshots
 
-| Screenshot                          | Description         |
-| :---------------------------------- | :------------------ |
-| ![Screenshot](screenshots/nav.jpg)  | Navigation Screen   |
-| ![Screenshot](screenshots/call.jpg) | Incoming Call Popup |
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="screenshots/nav.jpg" width="45%"><br>
+        <b>Navigation Screen</b>
+      </td>
+      <td align="center">
+        <img src="screenshots/call.jpg" width="45%"><br>
+        <b>Incoming Call Popup</b>
+      </td>
+    </tr>
+  </table>
+</div>
+
 
 ## 🚀 Deployment
 
