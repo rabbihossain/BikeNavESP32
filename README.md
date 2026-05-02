@@ -6,7 +6,7 @@ A high-performance, real-time navigation dashboard for motorcycles and bicycles.
 
 - **Real-time Navigation**: Synchronized turn-by-turn guidance with maneuver icons, distance, and ETA.
 - **Smart Speedometer**: Integrated speed display with visual safety alerts:
-  - **White**: Normal speeds (< 55 km/h)
+  - **Blue**: Normal speeds (< 55 km/h)
   - **Orange**: Caution threshold (55 - 70 km/h)
   - **Red**: Danger/High-speed threshold (> 70 km/h)
 - **Phone Health Monitoring**: Live sync of phone battery percentage (🔋) and signal strength (📶).
@@ -39,7 +39,6 @@ Search on `Aliexpress` for: **3.5 inch TFT LCD 320x480 ST7796 for ESP32** OR `Go
     </tr>
   </table>
 </div>
-
 
 ## 🚀 Deployment
 
