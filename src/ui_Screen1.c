@@ -160,7 +160,7 @@ lv_obj_set_style_bg_opa(ui_Navigation, 255, 0);
     ui_CallAccept = lv_btn_create(ui_CallPanel);
     lv_obj_set_size(ui_CallAccept, 120, 60);
     lv_obj_set_align(ui_CallAccept, LV_ALIGN_BOTTOM_LEFT);
-    lv_obj_set_x(ui_CallAccept, 30);
+    lv_obj_set_x(ui_CallAccept, 15);
     lv_obj_set_y(ui_CallAccept, -80);
     lv_obj_set_style_bg_color(ui_CallAccept, lv_color_hex(0x28C76F), 0); // Modern Green
     lv_obj_set_style_radius(ui_CallAccept, 30, 0);
@@ -173,7 +173,7 @@ lv_obj_set_style_bg_opa(ui_Navigation, 255, 0);
     ui_CallDecline = lv_btn_create(ui_CallPanel);
     lv_obj_set_size(ui_CallDecline, 120, 60);
     lv_obj_set_align(ui_CallDecline, LV_ALIGN_BOTTOM_RIGHT);
-    lv_obj_set_x(ui_CallDecline, -30);
+    lv_obj_set_x(ui_CallDecline, -15);
     lv_obj_set_y(ui_CallDecline, -80);
     lv_obj_set_style_bg_color(ui_CallDecline, lv_color_hex(0xEA5455), 0); // Modern Red
     lv_obj_set_style_radius(ui_CallDecline, 30, 0);
