@@ -350,7 +350,8 @@ void setup()
     lv_obj_add_event_cb(ui_CallDecline, ui_event_CallDecline, LV_EVENT_ALL, NULL);
 
     // 1. Create the BLE Device
-    BLEDevice::init("BikeNav");
+    BLEDevice::init(DEVICE_NAME);
+    BLEDevice::setMTU(512); 
 
     // 2. Create the BLE Server
     BLEServer *pServer = BLEDevice::createServer();
