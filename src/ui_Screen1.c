@@ -29,64 +29,57 @@ void ui_Screen1_screen_init(void)
 ui_Screen1 = lv_obj_create(NULL);
 lv_obj_clear_flag( ui_Screen1, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
 
-ui_MainTab = lv_tabview_create(ui_Screen1, LV_DIR_TOP, 0);
-lv_obj_set_width( ui_MainTab, 320);
-lv_obj_set_height( ui_MainTab, 400); // 480 - 80 header
-lv_obj_set_x( ui_MainTab, 0 );
-lv_obj_set_y( ui_MainTab, 80 ); // start after 80px header
-lv_obj_set_align( ui_MainTab, LV_ALIGN_TOP_MID );
-lv_obj_clear_flag( ui_MainTab, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
-lv_obj_clear_flag( lv_tabview_get_content(ui_MainTab), LV_OBJ_FLAG_SCROLLABLE ); // Disable swiping
-
-ui_Navigation = lv_tabview_add_tab(ui_MainTab, "Navigation");
-lv_obj_set_style_bg_color(ui_Navigation, lv_color_hex(0xF0F0F0), 0); // Light Background
-lv_obj_set_style_bg_opa(ui_Navigation, 255, 0);
-
-    // Floating Navigation Card
-    ui_NavCard = lv_obj_create(ui_Navigation);
-    lv_obj_set_size(ui_NavCard, 300, 340);
-    lv_obj_set_align(ui_NavCard, LV_ALIGN_CENTER);
-    lv_obj_set_y(ui_NavCard, -10);
-    lv_obj_set_style_bg_color(ui_NavCard, lv_color_hex(0xFFFFFF), 0); // White Card
-    lv_obj_set_style_radius(ui_NavCard, 24, 0);
-    lv_obj_set_style_border_width(ui_NavCard, 2, 0);
-    lv_obj_set_style_border_color(ui_NavCard, lv_color_hex(0xCCCCCC), 0);
-    lv_obj_set_style_shadow_width(ui_NavCard, 0, 0); // Remove shadow for cleaner sunlight visibility
+    // Navigation Card Container
+    ui_NavCard = lv_obj_create(ui_Screen1);
+    lv_obj_set_size(ui_NavCard, 320, 400); // Space below header
+    lv_obj_set_x(ui_NavCard, 0);
+    lv_obj_set_y(ui_NavCard, 80); // Start after 80px header
+    lv_obj_set_align(ui_NavCard, LV_ALIGN_TOP_MID);
+    lv_obj_set_style_bg_color(ui_NavCard, lv_color_hex(0xF0F0F0), 0); // Light Background
+    lv_obj_set_style_radius(ui_NavCard, 0, 0);
+    lv_obj_set_style_border_width(ui_NavCard, 0, 0);
     lv_obj_clear_flag(ui_NavCard, LV_OBJ_FLAG_SCROLLABLE);
 
-    ui_NavDirection = lv_img_create(ui_NavCard);
+    // Floating Inner Card for Navigation info
+    lv_obj_t * ui_NavInnerCard = lv_obj_create(ui_NavCard);
+    lv_obj_set_size(ui_NavInnerCard, 300, 340);
+    lv_obj_set_align(ui_NavInnerCard, LV_ALIGN_CENTER);
+    lv_obj_set_style_bg_color(ui_NavInnerCard, lv_color_hex(0xFFFFFF), 0);
+    lv_obj_set_style_radius(ui_NavInnerCard, 24, 0);
+    lv_obj_set_style_border_width(ui_NavInnerCard, 2, 0);
+    lv_obj_set_style_border_color(ui_NavInnerCard, lv_color_hex(0xCCCCCC), 0);
+    lv_obj_clear_flag(ui_NavInnerCard, LV_OBJ_FLAG_SCROLLABLE);
+
+    ui_NavDirection = lv_img_create(ui_NavInnerCard);
     lv_img_set_src(ui_NavDirection, &ui_img_ic_depart_png);
     lv_obj_set_width(ui_NavDirection, LV_SIZE_CONTENT);
     lv_obj_set_height(ui_NavDirection, LV_SIZE_CONTENT);
     lv_obj_set_align(ui_NavDirection, LV_ALIGN_TOP_MID);
     lv_obj_set_y(ui_NavDirection, 10);
-    lv_img_set_zoom(ui_NavDirection, 300); // LARGER Icon
+    lv_img_set_zoom(ui_NavDirection, 300);
     
-    ui_EKM = lv_label_create(ui_NavCard);
-    lv_obj_set_width(ui_EKM, LV_SIZE_CONTENT);
-    lv_obj_set_height(ui_EKM, LV_SIZE_CONTENT);
+    ui_EKM = lv_label_create(ui_NavInnerCard);
     lv_obj_set_align(ui_EKM, LV_ALIGN_TOP_MID);
     lv_obj_set_y(ui_EKM, 130);
     lv_label_set_text(ui_EKM, "00m");
-    lv_obj_set_style_text_color(ui_EKM, lv_color_hex(0x007AFF), 0); // Strong Blue for visibility
-    lv_obj_set_style_text_font(ui_EKM, &lv_font_montserrat_32, 0); // Bigger distance
+    lv_obj_set_style_text_color(ui_EKM, lv_color_hex(0x007AFF), 0);
+    lv_obj_set_style_text_font(ui_EKM, &lv_font_montserrat_32, 0);
 
-    ui_Instruction = lv_label_create(ui_NavCard);
+    ui_Instruction = lv_label_create(ui_NavInnerCard);
     lv_obj_set_width(ui_Instruction, lv_pct(90));
     lv_obj_set_height(ui_Instruction, 80);
     lv_obj_set_align(ui_Instruction, LV_ALIGN_CENTER);
     lv_obj_set_y(ui_Instruction, 60);
     lv_label_set_text(ui_Instruction, "Navigation Not Started Yet");
-    lv_obj_set_style_text_color(ui_Instruction, lv_color_hex(0x000000), 0); // Black text
+    lv_obj_set_style_text_color(ui_Instruction, lv_color_hex(0x000000), 0);
     lv_obj_set_style_text_align(ui_Instruction, LV_TEXT_ALIGN_CENTER, 0);
     lv_obj_set_style_text_font(ui_Instruction, &lv_font_montserrat_20, 0);
 
-    ui_ETA = lv_label_create(ui_NavCard);
-    lv_obj_set_width(ui_ETA, LV_SIZE_CONTENT);
+    ui_ETA = lv_label_create(ui_NavInnerCard);
     lv_obj_set_align(ui_ETA, LV_ALIGN_BOTTOM_MID);
     lv_obj_set_y(ui_ETA, -15);
     lv_label_set_text(ui_ETA, "00min");
-    lv_obj_set_style_text_color(ui_ETA, lv_color_hex(0x555555), 0); // Dark Grey
+    lv_obj_set_style_text_color(ui_ETA, lv_color_hex(0x555555), 0);
     lv_obj_set_style_text_font(ui_ETA, &lv_font_montserrat_16, 0);
 
     // --- Dashboard Header ---

@@ -15,6 +15,9 @@
 static const uint16_t screenWidth  = 320;
 static const uint16_t screenHeight = 480;
 
+// Global JSON document to reuse memory (Optimization)
+static JsonDocument navDoc;
+
 static lv_disp_draw_buf_t draw_buf;
 static lv_color_t buf[ screenWidth * screenHeight / 8 ];
 
@@ -87,10 +90,9 @@ class MyCallbacks: public BLECharacteristicCallbacks {
         std::string rxValue = pCharacteristic->getValue();
         
         if (rxValue.length() > 0) {
-            Serial.print("Received Value: ");
+            Serial.print(F("Received Value: "));
             Serial.println(rxValue.c_str());
-            const char* json_c_str = rxValue.c_str();
-            update_navigation_ui(json_c_str);
+            update_navigation_ui(rxValue.c_str());
         }
     }
 };
@@ -134,26 +136,26 @@ void my_touchpad_read( lv_indev_drv_t * indev_driver, lv_indev_data_t * data )
 }
 
 void update_navigation_ui(const char* json_data) {
-    // 1. Parse the JSON
-    JsonDocument doc; 
-    DeserializationError error = deserializeJson(doc, json_data);
+    // 1. Parse the JSON (reusing the static document)
+    navDoc.clear();
+    DeserializationError error = deserializeJson(navDoc, json_data);
 
     if (error) {
-        Serial.print("JSON parsing failed: ");
+        Serial.print(F("JSON parsing failed: "));
         Serial.println(error.c_str());
         return;
     }
 
     // --- A. Top Bar Updates (Clock & Speed) ---
-    if (doc["clock"].is<const char*>()) {
-        const char* clock_val = doc["clock"];
+    if (navDoc["clock"].is<const char*>()) {
+        const char* clock_val = navDoc["clock"];
         if (strcmp(clock_val, lv_label_get_text(ui_Clock)) != 0) {
             lv_label_set_text(ui_Clock, clock_val);
         }
     }
     
-    if (doc["speed"].is<const char*>()) {
-        const char* new_speed = doc["speed"];
+    if (navDoc["speed"].is<const char*>()) {
+        const char* new_speed = navDoc["speed"];
         if (new_speed && new_speed[0] != '\0') {
             if (strcmp(new_speed, lv_label_get_text(ui_Speed)) != 0) {
                 lv_label_set_text(ui_Speed, new_speed);
@@ -174,23 +176,23 @@ void update_navigation_ui(const char* json_data) {
     }
 
     // --- B. Health Updates ---
-    if (doc["bat"].is<int>()) {
-        int bat = doc["bat"];
+    if (navDoc["bat"].is<int>()) {
+        int bat = navDoc["bat"];
         char buf[32];
         snprintf(buf, sizeof(buf), LV_SYMBOL_BATTERY_FULL " %d%%", bat);
         lv_label_set_text(ui_Battery, buf);
     }
     
-    if (doc["sig"].is<int>()) {
-        int sig = doc["sig"];
+    if (navDoc["sig"].is<int>()) {
+        int sig = navDoc["sig"];
         char buf[32];
         snprintf(buf, sizeof(buf), LV_SYMBOL_WIFI " %d", sig);
         lv_label_set_text(ui_Signal, buf);
     }
 
-    if (doc["call"].is<JsonObject>()) {
-        int call_state = doc["call"]["st"] | 0; // 0: idle, 1: ringing
-        const char* caller_name = doc["call"]["nm"];
+    if (navDoc["call"].is<JsonObject>()) {
+        int call_state = navDoc["call"]["st"] | 0; // 0: idle, 1: ringing
+        const char* caller_name = navDoc["call"]["nm"];
         
         if (call_state == 1) {
             lv_label_set_text(ui_CallerName, (caller_name && caller_name[0] != '\0') ? caller_name : "Unknown Caller");
@@ -207,11 +209,11 @@ void update_navigation_ui(const char* json_data) {
     const char* d_str = nullptr;
     const char* i_str = nullptr;
 
-    if (doc["nav"].is<JsonObject>()) {
-        m_code = doc["nav"]["m"];
-        t_str = doc["nav"]["t"];
-        d_str = doc["nav"]["d"];
-        i_str = doc["nav"]["i"];
+    if (navDoc["nav"].is<JsonObject>()) {
+        m_code = navDoc["nav"]["m"];
+        t_str = navDoc["nav"]["t"];
+        d_str = navDoc["nav"]["d"];
+        i_str = navDoc["nav"]["i"];
         has_nav = true;
     }
 
@@ -310,9 +312,6 @@ void setup()
 
     ui_init();
     
-    // Disable swiping for stability (memory issues)
-    lv_obj_clear_flag(lv_tabview_get_content(ui_MainTab), LV_OBJ_FLAG_SCROLLABLE);
-
     // Default speed to 0
     lv_label_set_text(ui_Speed, "0");
 
