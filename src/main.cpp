@@ -213,12 +213,6 @@ void update_navigation_ui(const char* json_data) {
         d_str = doc["nav"]["d"];
         i_str = doc["nav"]["i"];
         has_nav = true;
-    } else if (doc["maneuver"].is<const char*>()) {
-        m_code = doc["maneuver"];
-        t_str = doc["time"];
-        d_str = doc["distance"];
-        i_str = doc["instruction"];
-        has_nav = true;
     }
 
     if (has_nav) {
