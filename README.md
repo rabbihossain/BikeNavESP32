@@ -46,7 +46,7 @@ Search on `Aliexpress` for: **3.5 inch TFT LCD 320x480 ST7796 for ESP32** OR `Go
 
 The easiest way to get started is by flashing the unified firmware file:
 
-1.  Download [BikeNav_v1_Full.bin](https://github.com/rabbihossain/BikeNavESP32/releases/download/1.0/BikeNav_v1_Full.bin).
+1.  Download `BikeNav_vx.x_Full.bin` from [releases](https://github.com/rabbihossain/BikeNavESP32/releases/).
 2.  Use a web flasher like [ESP Web Flasher](https://web.esphome.io/).
 3.  Set the flashing address to **0x0**.
 4.  Flash and Reboot.
