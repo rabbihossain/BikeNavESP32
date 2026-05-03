@@ -18,6 +18,10 @@ static const uint16_t screenHeight = 480;
 // Global JSON document to reuse memory (Optimization)
 static JsonDocument navDoc;
 
+// Thread-safety buffers (Optimization)
+static char bleBuffer[1024];
+static volatile bool newDataAvailable = false;
+
 static lv_disp_draw_buf_t draw_buf;
 static lv_color_t buf[ screenWidth * screenHeight / 8 ];
 
@@ -89,10 +93,11 @@ class MyCallbacks: public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic *pCharacteristic) {
         std::string rxValue = pCharacteristic->getValue();
         
-        if (rxValue.length() > 0) {
-            Serial.print(F("Received Value: "));
-            Serial.println(rxValue.c_str());
-            update_navigation_ui(rxValue.c_str());
+        if (rxValue.length() > 0 && rxValue.length() < sizeof(bleBuffer)) {
+            // Copy data to buffer and set flag for the main loop (Thread-Safety)
+            strncpy(bleBuffer, rxValue.c_str(), sizeof(bleBuffer) - 1);
+            bleBuffer[sizeof(bleBuffer) - 1] = '\0';
+            newDataAvailable = true;
         }
     }
 };
@@ -198,6 +203,11 @@ void update_navigation_ui(const char* json_data) {
             lv_label_set_text(ui_CallerName, (caller_name && caller_name[0] != '\0') ? caller_name : "Unknown Caller");
             lv_obj_clear_flag(ui_CallPanel, LV_OBJ_FLAG_HIDDEN);
         } else {
+            lv_obj_add_flag(ui_CallPanel, LV_OBJ_FLAG_HIDDEN);
+        }
+    } else {
+        // Implied Idle: If no call object is present, hide the panel (Optimization)
+        if (ui_CallPanel && !lv_obj_has_flag(ui_CallPanel, LV_OBJ_FLAG_HIDDEN)) {
             lv_obj_add_flag(ui_CallPanel, LV_OBJ_FLAG_HIDDEN);
         }
     }
@@ -389,6 +399,10 @@ void setup()
 
 void loop()
 {
+    if (newDataAvailable) {
+        newDataAvailable = false;
+        update_navigation_ui(bleBuffer);
+    }
     lv_timer_handler(); 
     delay( 5 );
 }
